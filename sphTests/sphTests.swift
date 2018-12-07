@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import RealmSwift
 @testable import sph
 
 class sphTests: XCTestCase {
@@ -19,9 +20,17 @@ class sphTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testAPI() {
+        let expectation = self.expectation(description: "Download data usage")
+        var usageDetails = List<UsageDetail>()
+        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: "a807b7ab-6cad-4aa6-87d0-e283a7353a0f") { (status, message, usageResponse) in
+            usageDetails = usageResponse
+            assert(status == true)
+            assert(usageDetails.count > 0)
+            
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 30, handler: nil)
     }
 
     func testPerformanceExample() {
