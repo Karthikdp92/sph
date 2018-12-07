@@ -12,6 +12,11 @@ class Constants {
     
     static let sharedInstance = Constants()
     
+    //Values
+    func resourceId() -> String {
+        return "a807b7ab-6cad-4aa6-87d0-e283a7353a0f"
+    }
+    
     // Messages
     func noInternetFromCache() -> String {
         return "No Internet connection available. Displaying the offline data available"
