@@ -15,6 +15,9 @@
 		321DC13B21BA511A009F6C18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321DC13A21BA511A009F6C18 /* Assets.xcassets */; };
 		321DC13E21BA511A009F6C18 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 321DC13C21BA511A009F6C18 /* LaunchScreen.storyboard */; };
 		321DC14921BA511A009F6C18 /* sphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321DC14821BA511A009F6C18 /* sphTests.swift */; };
+		321DC15721BA5936009F6C18 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321DC15621BA5936009F6C18 /* Constants.swift */; };
+		321DC15A21BA5AAB009F6C18 /* UsageDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321DC15921BA5AAB009F6C18 /* UsageDetail.swift */; };
+		321DC15C21BA5AFE009F6C18 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321DC15B21BA5AFE009F6C18 /* Record.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +42,9 @@
 		321DC14421BA511A009F6C18 /* sphTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sphTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		321DC14821BA511A009F6C18 /* sphTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sphTests.swift; sourceTree = "<group>"; };
 		321DC14A21BA511A009F6C18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		321DC15621BA5936009F6C18 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		321DC15921BA5AAB009F6C18 /* UsageDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageDetail.swift; sourceTree = "<group>"; };
+		321DC15B21BA5AFE009F6C18 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		3FE73B79AAA930F14988E4DC /* Pods-sphTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sphTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-sphTests/Pods-sphTests.release.xcconfig"; sourceTree = "<group>"; };
 		6137EA44C81661B09D687C08 /* Pods_sphTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_sphTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FABBF0888C180B655501590 /* Pods-sph.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sph.release.xcconfig"; path = "Pods/Target Support Files/Pods-sph/Pods-sph.release.xcconfig"; sourceTree = "<group>"; };
@@ -100,12 +106,14 @@
 		321DC13221BA5119009F6C18 /* sph */ = {
 			isa = PBXGroup;
 			children = (
+				321DC15821BA5A77009F6C18 /* Models */,
 				321DC13321BA5119009F6C18 /* AppDelegate.swift */,
 				321DC13521BA5119009F6C18 /* ViewController.swift */,
 				321DC13721BA5119009F6C18 /* Main.storyboard */,
 				321DC13A21BA511A009F6C18 /* Assets.xcassets */,
 				321DC13C21BA511A009F6C18 /* LaunchScreen.storyboard */,
 				321DC13F21BA511A009F6C18 /* Info.plist */,
+				321DC15621BA5936009F6C18 /* Constants.swift */,
 			);
 			path = sph;
 			sourceTree = "<group>";
@@ -117,6 +125,15 @@
 				321DC14A21BA511A009F6C18 /* Info.plist */,
 			);
 			path = sphTests;
+			sourceTree = "<group>";
+		};
+		321DC15821BA5A77009F6C18 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				321DC15921BA5AAB009F6C18 /* UsageDetail.swift */,
+				321DC15B21BA5AFE009F6C18 /* Record.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		824BEBAAC578DD1BF2FFECF2 /* Frameworks */ = {
@@ -291,8 +308,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				321DC15A21BA5AAB009F6C18 /* UsageDetail.swift in Sources */,
 				321DC13621BA5119009F6C18 /* ViewController.swift in Sources */,
+				321DC15C21BA5AFE009F6C18 /* Record.swift in Sources */,
 				321DC13421BA5119009F6C18 /* AppDelegate.swift in Sources */,
+				321DC15721BA5936009F6C18 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
