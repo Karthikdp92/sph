@@ -13,6 +13,7 @@ class UsageDetailsTableCell: UITableViewCell {
     @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var label1: UILabel!
     @IBOutlet weak var label2: UILabel!
+    @IBOutlet weak var alertImage: UIImageView!
     @IBOutlet weak var alertButton: UIButton!
     
     func setUpCardView() {

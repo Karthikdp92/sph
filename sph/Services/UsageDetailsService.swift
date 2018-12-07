@@ -30,13 +30,16 @@ class UsageDetailsServices : NSObject {
                 let json = try JSONSerialization.jsonObject(with: data!) as! Dictionary<String, AnyObject>
                 let status = json["success"] as? NSNumber ?? 0
                 if status == 1 {
-                    if let result = json["result"] as? Dictionary<String, AnyObject> {
-                        usageDetailsResponse = UsageDetailsParser.parse(json: result, usageDetails: usageDetails)
-                        callBack(false, true, "Success", usageDetailsResponse)
-                        return
+                    DispatchQueue.main.async {
+                        if let result = json["result"] as? Dictionary<String, AnyObject> {
+                            usageDetailsResponse = UsageDetailsParser.parse(json: result, usageDetails: usageDetails)
+                            callBack(false, true, "Success", usageDetailsResponse)
+                            return
+                        } else {
+                            callBack(false, false, Constants.sharedInstance.error(), usageDetailsResponse)
+                        }
                     }
                 }
-                callBack(false, false, Constants.sharedInstance.error(), usageDetailsResponse)
             } catch {
                 callBack(false, false, Constants.sharedInstance.error(), usageDetailsResponse)
             }

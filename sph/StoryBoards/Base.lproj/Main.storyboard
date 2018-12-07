@@ -13,7 +13,7 @@
         <scene sceneID="0Xs-Lf-SGb">
             <objects>
                 <tableViewController id="KFE-CK-5Yj" customClass="UsageDetailsTableController" customModule="sph" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cDx-Nf-N2B">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cDx-Nf-N2B">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -80,6 +80,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="alertButton" destination="COW-LH-uod" id="IR1-nX-UxL"/>
+                                    <outlet property="alertImage" destination="rjj-RK-8gf" id="3PF-lj-GYm"/>
                                     <outlet property="cardView" destination="VBA-bn-R9Z" id="Qao-aE-Bbd"/>
                                     <outlet property="label1" destination="Adt-Ba-wlk" id="B0B-MQ-LeM"/>
                                     <outlet property="label2" destination="HgW-rI-Mv8" id="2Iy-9c-Ar9"/>
