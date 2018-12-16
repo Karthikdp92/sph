@@ -11,69 +11,7 @@ import RealmSwift
 import Hippolyte
 @testable import sph
 
-class sphTests: XCTestCase {
-    
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testNormalAPICall() {
-        let expectation = self.expectation(description: "Download data usage")
-        var usageDetails = List<UsageDetail>()
-        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
-            usageDetails = usageResponse
-            assert(message == "Success")
-            assert(usageDetails.count > 0)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 30, handler: nil)
-    }
-    
-    func testStubForNotFound() {
-        let url : URL = URL(string: Constants.sharedInstance.dataUsageApi(offset: 0, limit: 25, resourceId:  Constants.resourceId))!
-
-        var stub = StubRequest(method: .GET, url: url)
-        stub.response = StubResponse(statusCode: 404)
-        stub.response.body = self.getJsonForStub(error: "NotFound")
-        Hippolyte.shared.add(stubbedRequest: stub)
-        Hippolyte.shared.start()
-        
-        let expectation = self.expectation(description: "Server Not Found")
-        let usageDetails = List<UsageDetail>()
-        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
-            assert(message == Constants.serverNotFoundError)
-            assert(usageDetails.count == 0)
-            self.removeStub()
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 30, handler: nil)
-        
-    }
-    
-    func testStubForInternalServerError() {
-        let url : URL = URL(string: Constants.sharedInstance.dataUsageApi(offset: 0, limit: 25, resourceId:  Constants.resourceId))!
-
-        var stub = StubRequest(method: .GET, url: url)
-        stub.response = StubResponse(statusCode: 500)
-        stub.response.body = self.getJsonForStub(error: "ServerError")
-        Hippolyte.shared.add(stubbedRequest: stub)
-        Hippolyte.shared.start()
-        
-        let expectation = self.expectation(description: "Server Not Found")
-        let usageDetails = List<UsageDetail>()
-        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
-            assert(message == Constants.serverError)
-            assert(usageDetails.count == 0)
-            self.removeStub()
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 30, handler: nil)
-    }
+extension XCTestCase{
     
     func getJsonForStub(error: String) -> Data? {
         if let path = Bundle.main.path(forResource: error, ofType: "json") {
@@ -86,16 +24,103 @@ class sphTests: XCTestCase {
         }
         return nil
     }
+}
+
+class sphTests: XCTestCase {
     
-    func removeStub() {
+//    func testNormalAPICall() {
+//
+//        let expectation = self.expectation(description: "Download data usage")
+//        var usageDetails = List<UsageDetail>()
+//        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
+//            usageDetails = usageResponse
+//            assert(message == "Success")
+//            assert(usageDetails.count > 0)
+//            expectation.fulfill()
+//        }
+//        waitForExpectations(timeout: 20, handler: nil)
+//    }
+}
+
+
+class sphNetworkError404: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+
+        let url : URL = URL(string: Constants.sharedInstance.dataUsageApi(offset: 0, limit: 25, resourceId:  Constants.resourceId))!
+        
+        var stub = StubRequest(method: .GET, url: url)
+        var response = StubResponse(error: NSError(domain: "com.sph.demo", code: 404, userInfo: [NSLocalizedDescriptionKey : Constants.serverNotFoundError]))
+        response.body = self.getJsonForStub(error: "NotFound")
+        stub.response = response
+        
+        Hippolyte.shared.clearStubs()
+        Hippolyte.shared.add(stubbedRequest: stub)
+        Hippolyte.shared.start()
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
         Hippolyte.shared.stop()
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testStubForNotFound() {
+        
+        let expectation = self.expectation(description: "Server Not Found")
+        let usageDetails = List<UsageDetail>()
+        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
+            if(message == Constants.serverNotFoundError){
+                assert(message == Constants.serverNotFoundError)
+                assert(usageDetails.count == 0)
+                Hippolyte.shared.stop()
+                URLSession.shared.invalidateAndCancel()
+                
+                expectation.fulfill()
+            }
         }
+        
+        waitForExpectations(timeout: 20, handler: nil)
     }
+}
 
+class sphNetworkError500: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        
+        let url : URL = URL(string: Constants.sharedInstance.dataUsageApi(offset: 0, limit: 25, resourceId:  Constants.resourceId))!
+        var stub = StubRequest(method: .GET, url: url)
+        var response = StubResponse(error: NSError(domain: "com.sph.demo", code: 500, userInfo: [NSLocalizedDescriptionKey : Constants.serverError]))
+        response.body = self.getJsonForStub(error: "ServerError")
+        stub.response = response
+        
+        Hippolyte.shared.clearStubs()
+        Hippolyte.shared.add(stubbedRequest: stub)
+        Hippolyte.shared.start()
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+        Hippolyte.shared.stop()
+    }
+    
+    func tesStubForInternalServerError() {
+        
+        let expectation = self.expectation(description: "Server Not Found")
+        let usageDetails = List<UsageDetail>()
+        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
+            if(message == Constants.serverError){
+            assert(message == Constants.serverError)
+            assert(usageDetails.count == 0)
+            Hippolyte.shared.stop()
+            URLSession.shared.invalidateAndCancel()
+            expectation.fulfill()
+            }
+        }
+        
+        waitForExpectations(timeout: 20, handler: nil)
+    }
 }

@@ -11,6 +11,12 @@ import RealmSwift
 
 class CacheManager: NSObject {
     
+    /**
+     Setup the realm database with default configuration.
+     - Parameters:
+        - Nothing
+     - returns: Nothing
+     */
     class func setupRealm() {
         if let realm = try? Realm(){
             var config = realm.configuration
@@ -20,6 +26,12 @@ class CacheManager: NSObject {
         }
     }
     
+    /**
+     Adds usage detail record into the realm database
+     - Parameters:
+        - usageDetail : Usage detail for the year
+     - returns: Nothing
+     */
     class func addUsageDetail(usageDetail: UsageDetail) {
         if let realm = try? Realm() {
             try? realm.write {
@@ -28,6 +40,12 @@ class CacheManager: NSObject {
         }
     }
     
+    /**
+     Get usage detail record from realm database
+     - Parameters:
+        - year : Required only if fetching usage details for a specific year
+     - returns: List of UsageDetail
+     */
     class func getUsageDetailsList(year: Int? = nil) -> List<UsageDetail> {
         var usageDetails = List<UsageDetail>()
         if let realm = try? Realm() {
@@ -48,6 +66,12 @@ class CacheManager: NSObject {
         return usageDetails
     }
     
+    /**
+     Update usage detail present in realm database
+     - Parameters:
+        - usageDetail : Details to be updated
+     - returns: Nothing
+     */
     class func updateUsageDetail(usageDetail: UsageDetail) {
         if let realm = try? Realm() {
             let usageDetailCache = realm.objects(UsageDetail.self).filter{ $0.year == usageDetail.year }.first
@@ -58,6 +82,12 @@ class CacheManager: NSObject {
         }
     }
     
+    /**
+     Clears the records available in realm database
+     - Parameters:
+        - Nothing
+     - returns: Nothing
+     */
     class func clearDataUsageCache() {
         if let realm = try? Realm() {
             try? realm.write {

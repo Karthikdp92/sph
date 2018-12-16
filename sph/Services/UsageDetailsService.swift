@@ -11,6 +11,15 @@ import RealmSwift
 
 class UsageDetailsServices : NSObject {
     
+    /**
+     Service method which handles the API call
+     - Parameters:
+        - usageDetails : Usage details available
+        - offset : Current offset value for pagination
+        - limit : Limit of records to be fetched
+        - resourceId : Unique id whose data usage details to be viewed
+     - returns: List of UsageDetail
+     */
     class func DownloadUsageDetails(usageDetails: List<UsageDetail>, offset: Int, limit: Int, resourceId: String, callBack:@escaping (Bool, Bool, String, List<UsageDetail>) -> Void) -> Void {
         
         var usageDetailsResponse = List<UsageDetail>()
@@ -30,7 +39,7 @@ class UsageDetailsServices : NSObject {
             do {
                 
                 guard let httpResponse = response as? HTTPURLResponse else {
-                    callBack(false, false, Constants.error, usageDetailsResponse)
+                    callBack(false, false, error?.localizedDescription ?? Constants.error, usageDetailsResponse)
                     return
                 }
                 

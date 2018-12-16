@@ -11,6 +11,13 @@ import RealmSwift
 
 class UsageDetailsParser : NSObject {
     
+    /**
+     Create usage details for an year with the records available from json response
+     - Parameters:
+        - json : Json response from the API
+        - usageDetails : Usage details available
+     - returns: List of UsageDetail
+     */
     class func parse(json: Dictionary<String, AnyObject>, usageDetails: List<UsageDetail>) -> List<UsageDetail> {
         if let records = json["records"] as? [Dictionary<String, AnyObject>] {
             for recordDict in records {

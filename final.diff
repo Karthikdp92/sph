@@ -1,0 +1,317 @@
+diff --git a/sph.xcodeproj/project.pbxproj b/sph.xcodeproj/project.pbxproj
+index c829fb8..4e3638f 100644
+--- a/sph.xcodeproj/project.pbxproj
++++ b/sph.xcodeproj/project.pbxproj
+@@ -10,8 +10,6 @@
+ 		100F877C0AE0E8DF0881764D /* Pods_sphTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6137EA44C81661B09D687C08 /* Pods_sphTests.framework */; };
+ 		10F2FC2295B9B75A24A027B9 /* Pods_sph.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F247F7BFBDAF79C939064D74 /* Pods_sph.framework */; };
+ 		3200668121C60AFE00DFC880 /* cacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3200668021C60AFE00DFC880 /* cacheTests.swift */; };
+-		3200668421C60CF800DFC880 /* NotFound.json in Resources */ = {isa = PBXBuildFile; fileRef = 3200668321C60CF800DFC880 /* NotFound.json */; };
+-		3200668621C60F3200DFC880 /* ServerError.json in Resources */ = {isa = PBXBuildFile; fileRef = 3200668521C60F3200DFC880 /* ServerError.json */; };
+ 		321DC13421BA5119009F6C18 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321DC13321BA5119009F6C18 /* AppDelegate.swift */; };
+ 		321DC13921BA5119009F6C18 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 321DC13721BA5119009F6C18 /* Main.storyboard */; };
+ 		321DC13B21BA511A009F6C18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321DC13A21BA511A009F6C18 /* Assets.xcassets */; };
+@@ -26,6 +24,8 @@
+ 		321DC16721BA6800009F6C18 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321DC16621BA6800009F6C18 /* CacheManager.swift */; };
+ 		321DC16C21BA7945009F6C18 /* UsageDetailsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321DC16B21BA7945009F6C18 /* UsageDetailsTableController.swift */; };
+ 		321DC16E21BA7997009F6C18 /* UsageDetailsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321DC16D21BA7997009F6C18 /* UsageDetailsTableCell.swift */; };
++		677414B321C61C2800F92CA3 /* NotFound.json in Resources */ = {isa = PBXBuildFile; fileRef = 3200668321C60CF800DFC880 /* NotFound.json */; };
++		677414B421C61C2800F92CA3 /* ServerError.json in Resources */ = {isa = PBXBuildFile; fileRef = 3200668521C60F3200DFC880 /* ServerError.json */; };
+ /* End PBXBuildFile section */
+ 
+ /* Begin PBXContainerItemProxy section */
+@@ -131,7 +131,6 @@
+ 		321DC13221BA5119009F6C18 /* sph */ = {
+ 			isa = PBXGroup;
+ 			children = (
+-				3200668221C60CBB00DFC880 /* Jsons */,
+ 				321DC16921BA76B9009F6C18 /* ViewControllers */,
+ 				321DC16821BA76AE009F6C18 /* Cells */,
+ 				321DC16321BA676E009F6C18 /* Managers */,
+@@ -150,6 +149,7 @@
+ 		321DC14721BA511A009F6C18 /* sphTests */ = {
+ 			isa = PBXGroup;
+ 			children = (
++				3200668221C60CBB00DFC880 /* Jsons */,
+ 				321DC14821BA511A009F6C18 /* sphTests.swift */,
+ 				3200668021C60AFE00DFC880 /* cacheTests.swift */,
+ 				321DC14A21BA511A009F6C18 /* Info.plist */,
+@@ -311,9 +311,7 @@
+ 			files = (
+ 				321DC13E21BA511A009F6C18 /* LaunchScreen.storyboard in Resources */,
+ 				321DC13B21BA511A009F6C18 /* Assets.xcassets in Resources */,
+-				3200668421C60CF800DFC880 /* NotFound.json in Resources */,
+ 				321DC13921BA5119009F6C18 /* Main.storyboard in Resources */,
+-				3200668621C60F3200DFC880 /* ServerError.json in Resources */,
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+ 		};
+@@ -321,6 +319,8 @@
+ 			isa = PBXResourcesBuildPhase;
+ 			buildActionMask = 2147483647;
+ 			files = (
++				677414B321C61C2800F92CA3 /* NotFound.json in Resources */,
++				677414B421C61C2800F92CA3 /* ServerError.json in Resources */,
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+ 		};
+diff --git a/sph/AppDelegate.swift b/sph/AppDelegate.swift
+index 773f2d3..5f1f50d 100644
+--- a/sph/AppDelegate.swift
++++ b/sph/AppDelegate.swift
+@@ -18,22 +18,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
+         CacheManager.setupRealm()
+         return true
+     }
+-
+-    func applicationWillResignActive(_ application: UIApplication) {
+-    }
+-
+-    func applicationDidEnterBackground(_ application: UIApplication) {
+-    }
+-
+-    func applicationWillEnterForeground(_ application: UIApplication) {
+-    }
+-
+-    func applicationDidBecomeActive(_ application: UIApplication) {
+-    }
+-
+-    func applicationWillTerminate(_ application: UIApplication) {
+-    }
+-
+-
+ }
+ 
+diff --git a/sph/Services/UsageDetailsService.swift b/sph/Services/UsageDetailsService.swift
+index d278bd8..c497815 100644
+--- a/sph/Services/UsageDetailsService.swift
++++ b/sph/Services/UsageDetailsService.swift
+@@ -30,7 +30,7 @@ class UsageDetailsServices : NSObject {
+             do {
+                 
+                 guard let httpResponse = response as? HTTPURLResponse else {
+-                    callBack(false, false, Constants.error, usageDetailsResponse)
++                    callBack(false, false, error?.localizedDescription ?? Constants.error, usageDetailsResponse)
+                     return
+                 }
+                 
+diff --git a/sphTests/Jsons/NotFound.json b/sphTests/Jsons/NotFound.json
+new file mode 100644
+index 0000000..12f9725
+--- /dev/null
++++ b/sphTests/Jsons/NotFound.json
+@@ -0,0 +1,16 @@
++{
++    help: "https://data.gov.sg/api/3/action/help_show?name=datastore_search",
++    success: false,
++    result: {
++        resource_id: "a807b7ab-6cad-4aa6-87d0-e283a7353a0f",
++        fields: [],
++        records: [],
++        _links: {
++            start: "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=5",
++            next: "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=5&offset=5"
++        },
++        offset: 0,
++        limit: 5,
++        total: 56
++    }
++}
+diff --git a/sphTests/Jsons/ServerError.json b/sphTests/Jsons/ServerError.json
+new file mode 100644
+index 0000000..12f9725
+--- /dev/null
++++ b/sphTests/Jsons/ServerError.json
+@@ -0,0 +1,16 @@
++{
++    help: "https://data.gov.sg/api/3/action/help_show?name=datastore_search",
++    success: false,
++    result: {
++        resource_id: "a807b7ab-6cad-4aa6-87d0-e283a7353a0f",
++        fields: [],
++        records: [],
++        _links: {
++            start: "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=5",
++            next: "/api/action/datastore_search?resource_id=a807b7ab-6cad-4aa6-87d0-e283a7353a0f&limit=5&offset=5"
++        },
++        offset: 0,
++        limit: 5,
++        total: 56
++    }
++}
+diff --git a/sphTests/sphTests.swift b/sphTests/sphTests.swift
+index 8d4e57c..d1492b5 100644
+--- a/sphTests/sphTests.swift
++++ b/sphTests/sphTests.swift
+@@ -11,91 +11,116 @@ import RealmSwift
+ import Hippolyte
+ @testable import sph
+ 
++extension XCTestCase{
++    
++    func getJsonForStub(error: String) -> Data? {
++        if let path = Bundle.main.path(forResource: error, ofType: "json") {
++            do {
++                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .alwaysMapped)
++                return data
++            } catch let error {
++                print("parse error: \(error.localizedDescription)")
++            }
++        }
++        return nil
++    }
++}
++
+ class sphTests: XCTestCase {
+     
++//    func testNormalAPICall() {
++//
++//        let expectation = self.expectation(description: "Download data usage")
++//        var usageDetails = List<UsageDetail>()
++//        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
++//            usageDetails = usageResponse
++//            assert(message == "Success")
++//            assert(usageDetails.count > 0)
++//            expectation.fulfill()
++//        }
++//        waitForExpectations(timeout: 20, handler: nil)
++//    }
++}
++
++
++class sphNetworkError404: XCTestCase {
++    
+     override func setUp() {
+-        // Put setup code here. This method is called before the invocation of each test method in the class.
+-    }
++        super.setUp()
+ 
++        let url : URL = URL(string: Constants.sharedInstance.dataUsageApi(offset: 0, limit: 25, resourceId:  Constants.resourceId))!
++        
++        var stub = StubRequest(method: .GET, url: url)
++        var response = StubResponse(error: NSError(domain: "com.sph.demo", code: 404, userInfo: [NSLocalizedDescriptionKey : Constants.serverNotFoundError]))
++        response.body = self.getJsonForStub(error: "NotFound")
++        stub.response = response
++        
++        Hippolyte.shared.clearStubs()
++        Hippolyte.shared.add(stubbedRequest: stub)
++        Hippolyte.shared.start()
++    }
++    
+     override func tearDown() {
+         // Put teardown code here. This method is called after the invocation of each test method in the class.
+         super.tearDown()
+-    }
+-    
+-    func testNormalAPICall() {
+-        let expectation = self.expectation(description: "Download data usage")
+-        var usageDetails = List<UsageDetail>()
+-        UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
+-            usageDetails = usageResponse
+-            assert(message == "Success")
+-            assert(usageDetails.count > 0)
+-            expectation.fulfill()
+-        }
+-        waitForExpectations(timeout: 30, handler: nil)
++        Hippolyte.shared.stop()
+     }
+     
+     func testStubForNotFound() {
+-        let url : URL = URL(string: Constants.sharedInstance.dataUsageApi(offset: 0, limit: 25, resourceId:  Constants.resourceId))!
+-
+-        var stub = StubRequest(method: .GET, url: url)
+-        stub.response = StubResponse(statusCode: 404)
+-        stub.response.body = self.getJsonForStub(error: "NotFound")
+-        Hippolyte.shared.add(stubbedRequest: stub)
+-        Hippolyte.shared.start()
+         
+         let expectation = self.expectation(description: "Server Not Found")
+         let usageDetails = List<UsageDetail>()
+         UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
+-            assert(message == Constants.serverNotFoundError)
+-            assert(usageDetails.count == 0)
+-            self.removeStub()
+-            expectation.fulfill()
++            if(message == Constants.serverNotFoundError){
++                assert(message == Constants.serverNotFoundError)
++                assert(usageDetails.count == 0)
++                Hippolyte.shared.stop()
++                URLSession.shared.invalidateAndCancel()
++                
++                expectation.fulfill()
++            }
+         }
+-        waitForExpectations(timeout: 30, handler: nil)
+         
++        waitForExpectations(timeout: 20, handler: nil)
+     }
++}
++
++class sphNetworkError500: XCTestCase {
+     
+-    func testStubForInternalServerError() {
++    override func setUp() {
++        super.setUp()
++        
+         let url : URL = URL(string: Constants.sharedInstance.dataUsageApi(offset: 0, limit: 25, resourceId:  Constants.resourceId))!
+-
+         var stub = StubRequest(method: .GET, url: url)
+-        stub.response = StubResponse(statusCode: 500)
+-        stub.response.body = self.getJsonForStub(error: "ServerError")
++        var response = StubResponse(error: NSError(domain: "com.sph.demo", code: 500, userInfo: [NSLocalizedDescriptionKey : Constants.serverError]))
++        response.body = self.getJsonForStub(error: "ServerError")
++        stub.response = response
++        
++        Hippolyte.shared.clearStubs()
+         Hippolyte.shared.add(stubbedRequest: stub)
+         Hippolyte.shared.start()
++    }
++    
++    override func tearDown() {
++        // Put teardown code here. This method is called after the invocation of each test method in the class.
++        super.tearDown()
++        Hippolyte.shared.stop()
++    }
++    
++    func tesStubForInternalServerError() {
+         
+         let expectation = self.expectation(description: "Server Not Found")
+         let usageDetails = List<UsageDetail>()
+         UsageDetailsServices.DownloadUsageDetails(usageDetails: usageDetails, offset: 0, limit: 25, resourceId: Constants.resourceId) { (isCache, status, message, usageResponse) in
++            if(message == Constants.serverError){
+             assert(message == Constants.serverError)
+             assert(usageDetails.count == 0)
+-            self.removeStub()
++            Hippolyte.shared.stop()
++            URLSession.shared.invalidateAndCancel()
+             expectation.fulfill()
+-        }
+-        waitForExpectations(timeout: 30, handler: nil)
+-    }
+-    
+-    func getJsonForStub(error: String) -> Data? {
+-        if let path = Bundle.main.path(forResource: error, ofType: "json") {
+-            do {
+-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .alwaysMapped)
+-                return data
+-            } catch let error {
+-                print("parse error: \(error.localizedDescription)")
+             }
+         }
+-        return nil
+-    }
+-    
+-    func removeStub() {
+-        Hippolyte.shared.stop()
+-    }
+-    
+-    func testPerformanceExample() {
+-        // This is an example of a performance test case.
+-        self.measure {
+-            // Put the code you want to measure the time of here.
+-        }
++        
++        waitForExpectations(timeout: 20, handler: nil)
+     }
+-
+ }
