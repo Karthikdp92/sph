@@ -7,7 +7,8 @@ target 'sph' do
 
   # Pods for sph
   pod 'RealmSwift'
-  
+  pod 'Hippolyte'
+
   target 'sphTests' do
     inherit! :search_paths
     # Pods for testing

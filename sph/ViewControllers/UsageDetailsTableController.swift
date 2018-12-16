@@ -22,7 +22,7 @@ class UsageDetailsTableController: UITableViewController {
     }
     
     private func getUsageDetails() {
-        UsageDetailsServices.DownloadUsageDetails(usageDetails: self.usageDetails, offset: self.offset, limit: self.limit, resourceId: Constants.sharedInstance.resourceId()) { (isCache, status, message, usageDetails) in
+        UsageDetailsServices.DownloadUsageDetails(usageDetails: self.usageDetails, offset: self.offset, limit: self.limit, resourceId: Constants.resourceId) { (isCache, status, message, usageDetails) in
             self.usageDetails = usageDetails
             DispatchQueue.main.async {
                 if !status {

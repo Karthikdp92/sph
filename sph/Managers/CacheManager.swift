@@ -14,7 +14,7 @@ class CacheManager: NSObject {
     class func setupRealm() {
         if let realm = try? Realm(){
             var config = realm.configuration
-            config.encryptionKey = Constants.sharedInstance.realmEncryptionKey().data(using: String.Encoding.utf8)
+            config.encryptionKey = Constants.realmEncryptionKey.data(using: String.Encoding.utf8)
             config.deleteRealmIfMigrationNeeded = true
             
         }

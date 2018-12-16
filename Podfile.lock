@@ -1,22 +1,26 @@
 PODS:
-  - Realm (3.12.0):
-    - Realm/Headers (= 3.12.0)
-  - Realm/Headers (3.12.0)
-  - RealmSwift (3.12.0):
-    - Realm (= 3.12.0)
+  - Hippolyte (0.5.0)
+  - Realm (3.13.0):
+    - Realm/Headers (= 3.13.0)
+  - Realm/Headers (3.13.0)
+  - RealmSwift (3.13.0):
+    - Realm (= 3.13.0)
 
 DEPENDENCIES:
+  - Hippolyte
   - RealmSwift
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Hippolyte
     - Realm
     - RealmSwift
 
 SPEC CHECKSUMS:
-  Realm: cdaef23c4ddb36ab1ddffed23f5a7f3332fc5585
-  RealmSwift: 5576324033f0aa5ef1e0a839a3da2281dff47a7f
+  Hippolyte: ac90c7dd71ae06470133ed7c1e12b80800f8bead
+  Realm: 5edd2ee65406aef591a4f9895de5a3440e51b3d8
+  RealmSwift: be5ebc7930e37cd3376b41cec7f21984528aaa16
 
-PODFILE CHECKSUM: 5c2fbddda4080b12041dc152ec491226e1b76855
+PODFILE CHECKSUM: 3818802c27d512921aef3b0a529aa7547dca4bf1
 
 COCOAPODS: 1.5.3
